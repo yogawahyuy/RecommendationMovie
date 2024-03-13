@@ -1,5 +1,6 @@
 package com.yogawahyuy.recommendationmovie.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -60,14 +61,14 @@ class HomeFragment : Fragment() {
         viewModel.loadData()
         provideCarouselView()
         provideNowPlaying()
-        providePopular()
+        provideTrending()
         provideTopRated()
     }
 
     private fun provideCarouselView(){
         val list = mutableListOf<CarouselItem>()
         viewModel.observerUp().observe(requireActivity(), Observer {
-            for (i in it.indices){
+            for (i in 0..10){
                 list.add(
                     CarouselItem(
                     BaseURL().baseImageOri+it[i].posterPath,
@@ -80,38 +81,61 @@ class HomeFragment : Fragment() {
     }
     private fun provideNowPlaying(){
         val urlList = arrayListOf<String>()
+        val idList = arrayListOf<Int>()
         val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.rvNowplaying.layoutManager = layMng
         viewModel.observerNP().observe(requireActivity(),Observer{
             for (i in it.indices){
                 urlList.add(it[i].posterPath)
+                idList.add(it[i].id)
             }
-            homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),urlList)
+            homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),idList,urlList)
             binding.rvNowplaying.adapter = homeRecyclerAdapter
+            homeRecyclerAdapter.setOnItemClickListener(object : HomeRecyclerAdapter.OnItemClickListener{
+                override fun onItemClick(position: Int) {
+                    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+                    intent.putExtra("id",idList[position])
+                    startActivity(intent)
+                }
+
+            })
         })
+
     }
-    private fun providePopular(){
+    private fun provideTrending(){
         val urlList = arrayListOf<String>()
+        val idList = arrayListOf<Int>()
         val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        binding.rvPopular.layoutManager = layMng
-        viewModel.observerPopular().observe(requireActivity(),Observer{
+        binding.rvTrending.layoutManager = layMng
+        viewModel.observerTrendingAll().observe(requireActivity(),Observer{
             for (i in it.indices){
                 urlList.add(it[i].posterPath)
+                idList.add(it[i].id)
             }
-            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),urlList)
-            binding.rvPopular.adapter = homeRecyclerAdapter
+            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),idList,urlList)
+            binding.rvTrending.adapter = homeRecyclerAdapter
+            homeRecyclerAdapter.setOnItemClickListener(object :HomeRecyclerAdapter.OnItemClickListener{
+                override fun onItemClick(position: Int) {
+                    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+                    intent.putExtra("id",idList[position])
+                    startActivity(intent)
+                }
+
+            })
         })
 
     }
     private fun provideTopRated(){
         val urlList = arrayListOf<String>()
+        val idList = arrayListOf<Int>()
         val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.rvToprated.layoutManager = layMng
         viewModel.observerTopRated().observe(requireActivity(),Observer{
             for (i in it.indices){
                 urlList.add(it[i].posterPath)
+                idList.add(it[i].id)
             }
-            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),urlList)
+            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),idList,urlList)
             binding.rvToprated.adapter = homeRecyclerAdapter
         })
 

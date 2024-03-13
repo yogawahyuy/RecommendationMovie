@@ -20,7 +20,7 @@ interface NetworkService {
     fun getPopular():Observable<Response<MovieListModel>>
     @GET("movie/top_rated")
     fun getTopRated():Observable<Response<MovieListModel>>
-    @GET("/trending/all/{time_window}")
+    @GET("trending/all/{time_window}")
     fun getTrendingAll(@Path("time_window") timeWindow:String):Observable<Response<TrendingListModel>>
 
 }
