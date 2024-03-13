@@ -68,6 +68,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("io.reactivex:rxandroid:1.2.1")
     implementation("io.reactivex:rxjava:1.3.8")
+    implementation ("com.squareup.picasso:picasso:2.8")
     //hilt
     implementation("com.google.dagger:hilt-android:2.50")
     kapt ("com.google.dagger:hilt-android-compiler:2.50")

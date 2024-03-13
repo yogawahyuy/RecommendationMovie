@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.yogawahyuy.recommendationmovie.R
+import com.yogawahyuy.recommendationmovie.adapter.HomeRecyclerAdapter
 import com.yogawahyuy.recommendationmovie.databinding.FragmentHomeBinding
 import com.yogawahyuy.recommendationmovie.util.BaseURL
 import com.yogawahyuy.recommendationmovie.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,11 +27,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewModel: MainViewModel
+    private lateinit var homeRecyclerAdapter: HomeRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,15 +56,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mainCarousel.registerLifecycle(lifecycle)
-        setupViewModel()
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        viewModel.loadData()
+        provideCarouselView()
+        provideNowPlaying()
+        providePopular()
+        provideTopRated()
     }
 
-    private fun setupViewModel(){
+    private fun provideCarouselView(){
         val list = mutableListOf<CarouselItem>()
-        val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        viewModel.loadData()
-        viewModel.observerNP().observe(requireActivity(), Observer {
-            Log.d("hasil ViewModel", "setupViewModel: $it")
+        viewModel.observerUp().observe(requireActivity(), Observer {
             for (i in it.indices){
                 list.add(
                     CarouselItem(
@@ -69,6 +77,44 @@ class HomeFragment : Fragment() {
             }
             binding.mainCarousel.setData(list)
         })
+    }
+    private fun provideNowPlaying(){
+        val urlList = arrayListOf<String>()
+        val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        binding.rvNowplaying.layoutManager = layMng
+        viewModel.observerNP().observe(requireActivity(),Observer{
+            for (i in it.indices){
+                urlList.add(it[i].posterPath)
+            }
+            homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),urlList)
+            binding.rvNowplaying.adapter = homeRecyclerAdapter
+        })
+    }
+    private fun providePopular(){
+        val urlList = arrayListOf<String>()
+        val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        binding.rvPopular.layoutManager = layMng
+        viewModel.observerPopular().observe(requireActivity(),Observer{
+            for (i in it.indices){
+                urlList.add(it[i].posterPath)
+            }
+            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),urlList)
+            binding.rvPopular.adapter = homeRecyclerAdapter
+        })
+
+    }
+    private fun provideTopRated(){
+        val urlList = arrayListOf<String>()
+        val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        binding.rvToprated.layoutManager = layMng
+        viewModel.observerTopRated().observe(requireActivity(),Observer{
+            for (i in it.indices){
+                urlList.add(it[i].posterPath)
+            }
+            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),urlList)
+            binding.rvToprated.adapter = homeRecyclerAdapter
+        })
+
     }
     companion object {
         /**
