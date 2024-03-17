@@ -9,15 +9,116 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/detail_poster"
+        <FrameLayout
+            android:id="@+id/flBackdrop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:foreground="@drawable/shape_gradien"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBackdrop"
+                android:layout_width="match_parent"
+                android:layout_height="325dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dummy"/>
+        </FrameLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardviewposter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="8dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/flBackdrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/flBackdrop">
+            <ImageView
+                android:id="@+id/detail_poster"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/cardviewposter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cardviewposter">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title_moviedetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dummy"
+                android:ellipsize="marquee"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="24sp"
+                android:padding="4dp"/>
+            <LinearLayout
+                android:id="@+id/lin_rating_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/title_moviedetail">
+                <ImageView
+                    android:id="@+id/star_rating"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/star"
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="7.8"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detail_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lin_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardviewposter">
+            <TextView
+                android:id="@+id/tv_title_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Overview"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_semibold"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_value_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lorem_ipsum"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_regular"/>
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

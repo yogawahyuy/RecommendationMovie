@@ -1,5 +1,6 @@
 package com.yogawahyuy.recommendationmovie.util
 
+import com.yogawahyuy.recommendationmovie.model.DetailMovieModel
 import com.yogawahyuy.recommendationmovie.model.MovieListModel
 import com.yogawahyuy.recommendationmovie.model.TrendingListModel
 import retrofit2.Call
@@ -22,5 +23,9 @@ interface NetworkService {
     fun getTopRated():Observable<Response<MovieListModel>>
     @GET("trending/all/{time_window}")
     fun getTrendingAll(@Path("time_window") timeWindow:String):Observable<Response<TrendingListModel>>
+
+    //detail movie
+    @GET("movie/{movie_id}")
+    fun getDetailMovie(@Path("movie_id") movieId:Int):Observable<Response<DetailMovieModel>>
 
 }
