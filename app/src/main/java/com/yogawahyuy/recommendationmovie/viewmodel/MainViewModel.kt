@@ -27,6 +27,7 @@ class MainViewModel @Inject constructor(val repository: MainRepository): ViewMod
         repository.getApiTrendingAll(liveDataTrendingAll)
     }
 
+    fun loadTrendingAll(){repository.getApiTrendingAll(liveDataTrendingAll)}
     fun observerNP() : MutableLiveData<List<Result>> = liveDataNowPlaying
     fun observerUp() : MutableLiveData<List<Result>> = liveDataUpcoming
     fun observerPopular() : MutableLiveData<List<Result>> = liveDataPopular

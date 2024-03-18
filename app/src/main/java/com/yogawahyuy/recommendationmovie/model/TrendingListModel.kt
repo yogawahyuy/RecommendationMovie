@@ -28,6 +28,12 @@ data class ResultTrending(
     @SerializedName("vote_average")
     val voteAverage:Float,
     @SerializedName("vote_count")
-    val voteCount:Int
+    val voteCount:Int,
+    @SerializedName("name")
+    val name:String,
+    @SerializedName("original_name")
+    val originalName:String,
+    @SerializedName("media_type")
+    val mediaType:String
 )
 

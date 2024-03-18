@@ -2,7 +2,6 @@ package com.yogawahyuy.recommendationmovie.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yogawahyuy.recommendationmovie.R
 import com.yogawahyuy.recommendationmovie.adapter.HomeRecyclerAdapter
 import com.yogawahyuy.recommendationmovie.databinding.FragmentHomeBinding
 import com.yogawahyuy.recommendationmovie.util.BaseURL
@@ -93,14 +91,16 @@ class HomeFragment : Fragment() {
     private fun provideNowPlaying(){
         val urlList = arrayListOf<String>()
         val idList = arrayListOf<Int>()
+        val nameList = arrayListOf<String>()
         val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.rvNowplaying.layoutManager = layMng
         viewModel.observerNP().observe(requireActivity(),Observer{
             for (i in it.indices){
                 urlList.add(it[i].posterPath)
                 idList.add(it[i].id)
+                nameList.add(it[i].title)
             }
-            homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),idList,urlList)
+            homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(), idList, urlList, nameList)
             binding.rvNowplaying.adapter = homeRecyclerAdapter
             homeRecyclerAdapter.setOnItemClickListener(object : HomeRecyclerAdapter.OnItemClickListener{
                 override fun onItemClick(position: Int) {
@@ -116,14 +116,21 @@ class HomeFragment : Fragment() {
     private fun provideTrending(){
         val urlList = arrayListOf<String>()
         val idList = arrayListOf<Int>()
+        val nameList = arrayListOf<String>()
         val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.rvTrending.layoutManager = layMng
         viewModel.observerTrendingAll().observe(requireActivity(),Observer{
             for (i in it.indices){
                 urlList.add(it[i].posterPath)
                 idList.add(it[i].id)
+                if (it[i].mediaType == "tv") nameList.add(it[i].name) else nameList.add(it[i].title)
             }
-            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),idList,urlList)
+            val homeRecyclerAdapter = HomeRecyclerAdapter(
+                requireContext(),
+                idList,
+                urlList,
+                nameList
+            )
             binding.rvTrending.adapter = homeRecyclerAdapter
             homeRecyclerAdapter.setOnItemClickListener(object :HomeRecyclerAdapter.OnItemClickListener{
                 override fun onItemClick(position: Int) {
@@ -139,14 +146,16 @@ class HomeFragment : Fragment() {
     private fun provideTopRated(){
         val urlList = arrayListOf<String>()
         val idList = arrayListOf<Int>()
+        val nameList = arrayListOf<String>()
         val layMng = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.rvToprated.layoutManager = layMng
         viewModel.observerTopRated().observe(requireActivity(),Observer{
             for (i in it.indices){
                 urlList.add(it[i].posterPath)
                 idList.add(it[i].id)
+                nameList.add(it[i].title)
             }
-            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),idList,urlList)
+            val homeRecyclerAdapter = HomeRecyclerAdapter(requireContext(),idList,urlList,nameList)
             binding.rvToprated.adapter = homeRecyclerAdapter
         })
 

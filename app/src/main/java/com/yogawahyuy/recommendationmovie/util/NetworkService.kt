@@ -31,4 +31,8 @@ interface NetworkService {
     @GET("movie/{movie_id}/credits")
     fun getCreditMovies(@Path("movie_id") movieId: Int):Observable<Response<CreditMovieModel>>
 
+    //search
+    @GET("search/multi")
+    fun getSearchResult(@Query("query") searchString: String):Observable<Response<TrendingListModel>>
+
 }
