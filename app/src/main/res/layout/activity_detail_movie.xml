@@ -57,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:text="Dummy"
                 android:ellipsize="marquee"
-                android:textColor="@color/black"
                 android:fontFamily="@font/poppins_semibold"
                 android:textSize="24sp"
+                android:layout_marginStart="16dp"
                 android:padding="4dp"/>
             <LinearLayout
                 android:id="@+id/lin_rating_detail"
@@ -80,7 +80,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="7.8"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="16sp"
                     android:layout_marginStart="8dp"/>
@@ -93,6 +92,16 @@
                 android:orientation="horizontal"/>
         </RelativeLayout>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_overview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="8dp"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardviewposter">
 
         <LinearLayout
             android:id="@+id/lin_overview"
@@ -100,9 +109,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardviewposter">
+            >
             <TextView
                 android:id="@+id/tv_title_overview"
                 android:layout_width="match_parent"
@@ -118,6 +125,7 @@
                 android:textSize="14sp"
                 android:fontFamily="@font/poppins_regular"/>
         </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

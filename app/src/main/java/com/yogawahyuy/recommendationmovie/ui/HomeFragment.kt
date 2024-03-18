@@ -16,6 +16,7 @@ import com.yogawahyuy.recommendationmovie.databinding.FragmentHomeBinding
 import com.yogawahyuy.recommendationmovie.util.BaseURL
 import com.yogawahyuy.recommendationmovie.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.imaginativeworld.whynotimagecarousel.listener.CarouselListener
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
 // TODO: Rename parameter arguments, choose names that match
@@ -67,6 +68,7 @@ class HomeFragment : Fragment() {
 
     private fun provideCarouselView(){
         val list = mutableListOf<CarouselItem>()
+        val idList = mutableListOf<Int>()
         viewModel.observerUp().observe(requireActivity(), Observer {
             for (i in 0..10){
                 list.add(
@@ -75,8 +77,16 @@ class HomeFragment : Fragment() {
                     it[i].originalTitle
                 )
                 )
+                idList.add(it[i].id)
             }
             binding.mainCarousel.setData(list)
+            binding.mainCarousel.carouselListener = object :CarouselListener{
+                override fun onClick(position: Int, carouselItem: CarouselItem) {
+                    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+                    intent.putExtra("id",idList[position])
+                    startActivity(intent)
+                }
+            }
         })
     }
     private fun provideNowPlaying(){
