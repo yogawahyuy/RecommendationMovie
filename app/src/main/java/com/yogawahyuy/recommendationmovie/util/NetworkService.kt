@@ -1,5 +1,6 @@
 package com.yogawahyuy.recommendationmovie.util
 
+import com.yogawahyuy.recommendationmovie.model.CreditMovieModel
 import com.yogawahyuy.recommendationmovie.model.DetailMovieModel
 import com.yogawahyuy.recommendationmovie.model.MovieListModel
 import com.yogawahyuy.recommendationmovie.model.TrendingListModel
@@ -27,5 +28,7 @@ interface NetworkService {
     //detail movie
     @GET("movie/{movie_id}")
     fun getDetailMovie(@Path("movie_id") movieId:Int):Observable<Response<DetailMovieModel>>
+    @GET("movie/{movie_id}/credits")
+    fun getCreditMovies(@Path("movie_id") movieId: Int):Observable<Response<CreditMovieModel>>
 
 }

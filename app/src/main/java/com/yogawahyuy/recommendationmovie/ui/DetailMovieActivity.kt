@@ -9,8 +9,11 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.yogawahyuy.recommendationmovie.R
+import com.yogawahyuy.recommendationmovie.adapter.DetailCreditAdapter
+import com.yogawahyuy.recommendationmovie.adapter.DetailGenreAdapter
 import com.yogawahyuy.recommendationmovie.databinding.ActivityDetailMovieBinding
 import com.yogawahyuy.recommendationmovie.util.BaseURL
 import com.yogawahyuy.recommendationmovie.viewmodel.DetailViewModel
@@ -38,18 +41,36 @@ class DetailMovieActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window,false)
         viewModel = ViewModelProvider(this)[DetailViewModel::class.java]
         val intent = intent
-        getDetailMovie(intent.getIntExtra("id",0))
+        viewModel.loadDetail(intent.getIntExtra("id",0))
+        getDetailMovie()
+        getCreditMovie()
         Log.d("isiid", "onCreate: ${intent.getIntExtra("id",0)}")
     }
 
-    private fun getDetailMovie(movieId:Int){
-        viewModel.loadDetail(movieId)
+    private fun getDetailMovie(){
+        val layMng = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+        binding.rvDetailGenre.layoutManager = layMng
         viewModel.observerDetailMovie().observe(this, Observer {
             Picasso.get().load(BaseURL().baseImageOri+it.posterPath).into(binding.detailPoster)
             Picasso.get().load(BaseURL().baseImageOri+it.backdropPath).into(binding.ivBackdrop)
             binding.titleMoviedetail.text = it.title
             binding.tvRating.text = df1.format(it.voteAverage)
             binding.tvValueOverview.text = it.overview
+
+            val genreList = arrayListOf<String>()
+            for (i in it.genres.indices) {
+                genreList.add(it.genres[i].name!!)
+            }
+            val adapter = DetailGenreAdapter(this,genreList)
+            binding.rvDetailGenre.adapter=adapter
+        })
+    }
+    private fun getCreditMovie(){
+        val layMng = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+        binding.rvDetailCast.layoutManager = layMng
+        viewModel.observerCreditMovie().observe(this, Observer {
+            val adapter =  DetailCreditAdapter(this,it)
+            binding.rvDetailCast.adapter = adapter
         })
     }
 }

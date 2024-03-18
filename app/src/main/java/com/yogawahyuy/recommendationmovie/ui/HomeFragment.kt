@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
         val list = mutableListOf<CarouselItem>()
         val idList = mutableListOf<Int>()
         viewModel.observerUp().observe(requireActivity(), Observer {
+            list.clear()
             for (i in 0..10){
                 list.add(
                     CarouselItem(
