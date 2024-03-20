@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class DetailMovieModel(@SerializedName("adult"                 ) var adult               : Boolean?                       ,
                             @SerializedName("backdrop_path"         ) var backdropPath        : String?                        ,
-                            @SerializedName("belongs_to_collection" ) var belongsToCollection : String?                        ,
                             @SerializedName("budget"                ) var budget              : Int?                           ,
                             @SerializedName("genres"                ) var genres              : ArrayList<Genres>              ,
                             @SerializedName("homepage"              ) var homepage            : String?                        ,

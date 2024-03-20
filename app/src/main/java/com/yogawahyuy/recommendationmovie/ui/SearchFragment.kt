@@ -93,19 +93,27 @@ class SearchFragment : Fragment() {
         val layMng = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding.rvSearch.layoutManager = layMng
         searchViewModel.observerSearchResult().observe(requireActivity(), Observer {
-            val searchAdapter = SearchRecyclerAdapter(
-                requireContext(),
-                it
-            )
-            binding.rvSearch.adapter = searchAdapter
-            searchAdapter.setOnItemClickListener(object : SearchRecyclerAdapter.OnItemClickListener{
-                override fun onItemClick(position: Int) {
-                    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-                    intent.putExtra("id",it.get(position).id)
-                    startActivity(intent)
-                }
+            if (it.isEmpty()){
+                binding.tvEmpty.visibility = View.VISIBLE
+                binding.rvSearch.visibility = View.GONE
+            }else {
+                binding.tvEmpty.visibility = View.GONE
+                binding.rvSearch.visibility = View.VISIBLE
+                val searchAdapter = SearchRecyclerAdapter(
+                    requireContext(),
+                    it
+                )
+                binding.rvSearch.adapter = searchAdapter
+                searchAdapter.setOnItemClickListener(object :
+                    SearchRecyclerAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+                        intent.putExtra("id", it.get(position).id)
+                        startActivity(intent)
+                    }
 
-            })
+                })
+            }
         })
     }
     companion object {
