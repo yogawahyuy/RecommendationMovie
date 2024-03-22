@@ -1,5 +1,7 @@
 package com.yogawahyuy.recommendationmovie.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -48,6 +50,7 @@ class DetailMovieActivity : AppCompatActivity() {
         viewModel.loadDetail(intent.getIntExtra("id",0))
         getDetailMovie()
         getCreditMovie()
+        getVideosProvider()
         Log.d("isiid", "onCreate: ${intent.getIntExtra("id",0)}")
     }
 
@@ -97,10 +100,21 @@ class DetailMovieActivity : AppCompatActivity() {
             binding.rvDetailCast.adapter = adapter
         })
     }
+    private fun getVideosProvider(){
+        viewModel.observerVideosProvider().observe(this, Observer {
+           val key = it[it.lastIndex].key
+            binding.constraintPlaytrailer.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://"+key))
+                startActivity(intent)
+            }
+        })
+    }
     private fun convNumber(number:Int): String{
         val format = NumberFormat.getCurrencyInstance()
         format.maximumFractionDigits = 0
         format.currency = Currency.getInstance("USD")
         return format.format(number)
     }
+
+
 }

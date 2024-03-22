@@ -7,6 +7,8 @@ import com.yogawahyuy.recommendationmovie.model.CreditMovieModel
 import com.yogawahyuy.recommendationmovie.model.DetailMovieModel
 import com.yogawahyuy.recommendationmovie.model.MovieListModel
 import com.yogawahyuy.recommendationmovie.model.Result
+import com.yogawahyuy.recommendationmovie.model.ResultVideos
+import com.yogawahyuy.recommendationmovie.model.VideosProviderModel
 import com.yogawahyuy.recommendationmovie.util.NetworkService
 import retrofit2.Response
 import rx.Observable
@@ -24,6 +26,9 @@ class DetailRepository @Inject constructor(private val networkService: NetworkSe
     }
     fun getCreditMovie(livedata:MutableLiveData<List<Cast>>,movieId: Int){
         prosesObservableCredit(networkService.getCreditMovies(movieId),livedata)
+    }
+    fun getVideosProvider(liveData: MutableLiveData<List<ResultVideos>>,movieId: Int){
+        prosesObservableVideos(networkService.getVideoProvider(movieId),liveData)
     }
     private fun prosesObservable(observable: Observable<Response<DetailMovieModel>>, livedata: MutableLiveData<DetailMovieModel>){
         compositeSubscription.add(observable.subscribeOn(Schedulers.newThread())
@@ -49,7 +54,7 @@ class DetailRepository @Inject constructor(private val networkService: NetworkSe
             }))
     }
 
-        private fun prosesObservableCredit(observable: Observable<Response<CreditMovieModel>>, livedata: MutableLiveData<List<Cast>>){
+    private fun prosesObservableCredit(observable: Observable<Response<CreditMovieModel>>, livedata: MutableLiveData<List<Cast>>){
         compositeSubscription.add(observable.subscribeOn(Schedulers.newThread())
             .unsubscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -66,6 +71,30 @@ class DetailRepository @Inject constructor(private val networkService: NetworkSe
                     if (t!=null){
                         if (t.isSuccessful){
                             livedata.postValue(t.body()?.cast)
+                        }
+                    }
+                }
+
+            }))
+    }
+
+    private fun prosesObservableVideos(observable: Observable<Response<VideosProviderModel>>, livedata: MutableLiveData<List<ResultVideos>>){
+        compositeSubscription.add(observable.subscribeOn(Schedulers.newThread())
+            .unsubscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Subscriber<Response<VideosProviderModel>>(){
+                override fun onCompleted() {
+                }
+
+                override fun onError(e: Throwable?) {
+                    e?.printStackTrace()
+                    Log.d("MainRepo", "onError: "+e?.message)
+                }
+
+                override fun onNext(t: Response<VideosProviderModel>?) {
+                    if (t!=null){
+                        if (t.isSuccessful){
+                            livedata.postValue(t.body()?.resultVideos)
                         }
                     }
                 }
