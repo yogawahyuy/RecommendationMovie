@@ -1,5 +1,5 @@
 
-# Project Title
+# RecommendationMovie
 
 an android application with the name GOOD TIME
 application that displays movie recommendations,
